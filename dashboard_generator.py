@@ -27,12 +27,16 @@ print("---------------------------------------------------------------------")
 # REPORT SELECTION
 
 selected_year = input("Please input a year (Example 2018 -- for Year): ")
-selected_month = input("Please input a month (Example 01 -- for January = ): ")
+selected_month = input("Please input a month (Example 01 -- for January): ")
 
 # FILE SELECTED
 
 file_name = "sales-" + selected_year + selected_month + ".csv"
-while not os.path.exists(file_name):
+
+# OPENING SPECIFIC FILE
+
+find_file = os.path.join(save_path, file_name) #find the file
+while not os.path.exists(find_file): #correct if does not exist
     print("---------------------------------------------------------------------")
     print("\n")
     print("The file selected do not exist. Please try again")
@@ -40,9 +44,7 @@ while not os.path.exists(file_name):
     print("---------------------------------------------------------------------")
     exit()
 
-# OPENING SPECIFIC FILE
 
-find_file = os.path.join(save_path, file_name) #find the file
 
 stats = pd.read_csv(find_file)
 
