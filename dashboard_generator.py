@@ -7,6 +7,11 @@ import locale # from https://stackoverflow.com/Questions/320929/currency-formatt
 from os import listdir
 from os.path import isfile, join
 
+import matplotlib
+import matplotlib.pyplot as plt
+import matplotlib.pyplot as plt; plt.rcdefaults()
+import numpy as np
+
 # FILES PATH
 
 save_path = 'C:/Users/Owner/Desktop/NYU-MBA/Programming/Files/monthly-sales/data'
@@ -92,7 +97,7 @@ print("SALES REPORT " + "(" + month_name + " " + selected_year + ")")
 
 print("TOTAL SALES: " + (total_sales_format))
 
-print("---------------------------------------------------------------------")
+print("\n")
 
 # TOP SELLING PRODUCTS
 
@@ -114,3 +119,68 @@ for d in top_sellers:
     locale.setlocale( locale.LC_ALL, '' )
     print("  " + str(d["rank"]) + ") " + d["name"] +
           ": " + to_usd(d["monthly_sales"]))
+
+print("\n")
+
+print("---------------------------------------------------------------------")
+
+print("\n")
+
+print("GENERATING BAR CHART...")
+
+print("\n")
+
+print("---------------------------------------------------------------------")
+
+# PRINT BAR CHART
+
+#sellers_names = top_sellers['monthly_sales']
+#
+#y_pos = np.arange(len(sellers_names))
+#performance = [10,8,6,4,2,1]
+#
+#plt.bar(y_pos, performance, align='center', alpha=0.5)
+#plt.xticks(y_pos, objects)
+#plt.ylabel('Sales (USD)')
+#plt.title("TOP-SELLING PRODUCTS " + "(" + month_name + " " + selected_year + ")")
+#
+#plt.show()
+
+print(top_sellers)
+
+import operator # helps to sort correctly
+import altair as alt
+import pandas as pd
+
+
+
+
+
+exit()
+
+
+
+
+sorted_products = sorted(top_sellers, key=operator.itemgetter('name'))
+sorted_sales = sorted(top_sellers, key=operator.itemgetter('monthly_sales'))
+
+print(sorted_products)
+
+print(sorted_sales)
+
+#
+#
+#source = pd.DataFrame({
+#    "a": list(sorted_products),
+#    "b": list(sorted_sales)
+#})
+#
+#chart = alt.Chart(source).mark_bar().encode(
+#    x="a",
+#    y="b"
+#)
+#
+#chart.serve()
+#
+#exit()
+
