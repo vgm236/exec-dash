@@ -7,10 +7,10 @@ import locale # from https://stackoverflow.com/Questions/320929/currency-formatt
 from os import listdir
 from os.path import isfile, join
 
+#for chart generation
 import matplotlib
 import matplotlib.pyplot as plt
-import matplotlib.pyplot as plt; plt.rcdefaults()
-import numpy as np
+import matplotlib.ticker as ticker
 
 # FILES PATH
 
@@ -48,7 +48,6 @@ while not os.path.exists(find_file): #correct if does not exist
     print("\n")
     print("---------------------------------------------------------------------")
     exit()
-
 
 
 stats = pd.read_csv(find_file)
@@ -132,55 +131,63 @@ print("\n")
 
 print("---------------------------------------------------------------------")
 
-# PRINT BAR CHART
+### PRINT BAR CHART 
 
-#sellers_names = top_sellers['monthly_sales']
-#
-#y_pos = np.arange(len(sellers_names))
-#performance = [10,8,6,4,2,1]
-#
-#plt.bar(y_pos, performance, align='center', alpha=0.5)
-#plt.xticks(y_pos, objects)
-#plt.ylabel('Sales (USD)')
-#plt.title("TOP-SELLING PRODUCTS " + "(" + month_name + " " + selected_year + ")")
-#
-#plt.show()
+# first two lines are the list comprehensions to make a list of dictionaries into a list)
 
-print(top_sellers)
-
-import operator # helps to sort correctly
-import altair as alt
-import pandas as pd
+x = [p["name"] for p in top_sellers] ## VERY IMPORTANT
 
 
+y = [p["monthly_sales"] for p in top_sellers] ## VERY IMPORTANT
 
+#sorting in the correct order
 
+x.reverse()
+y.reverse()
+
+# break charts into two
+
+fig, ax = plt.subplots() # enables us to further customize the figure and/or the axes
+
+#formatting chart
+
+usd_formatter = ticker.FormatStrFormatter('$%1.0f')
+ax.xaxis.set_major_formatter(usd_formatter)
+
+# CHART GENERATION
+
+plt.barh(x, y) 
+
+plt.title("TOP-SELLING PRODUCTS " + "(" + month_name + " " + selected_year + ")") # AXIS TITLES
+plt.ylabel('Sales (USD)') # AXIS TITLES     
+plt.ylabel("Product") # AXIS TITLES
+
+# formatting numbers
+
+for i, v in enumerate(y):
+    ax.text(v, i, usd_formatter(v), color='black', fontweight='bold')  
+    
+    #https://matplotlib.org/users/colors.html
+    #https://matplotlib.org/3.1.0/gallery/pyplots/text_commands.html#sphx-glr-gallery-pyplots-text-commands-py
+
+plt.tight_layout() # ensures all areas of the chart are visible by default (fixes labels getting cut off)
+plt.show()
 
 exit()
 
+## FULL SOLUTION PROVIDED BY THE PROFESSOR
 
+#  # this section needs to come before the chart construction
 
-
-sorted_products = sorted(top_sellers, key=operator.itemgetter('name'))
-sorted_sales = sorted(top_sellers, key=operator.itemgetter('monthly_sales'))
-
-print(sorted_products)
-
-print(sorted_sales)
-
-#
-#
-#source = pd.DataFrame({
-#    "a": list(sorted_products),
-#    "b": list(sorted_sales)
-#})
-#
-#chart = alt.Chart(source).mark_bar().encode(
-#    x="a",
-#    y="b"
-#)
-#
-#chart.serve()
-#
-#exit()
-
+#  fig, ax = plt.subplots() # enables us to further customize the figure and/or the axes
+#  usd_formatter = ticker.FormatStrFormatter('$%1.0f')
+#  ax.xaxis.set_major_formatter(usd_formatter)
+#  
+#  # chart construction
+#  plt.barh(sorted_products, sorted_sales)
+#  plt.title(chart_title)
+#  plt.ylabel("Product")
+#  plt.xlabel("Monthly Sales (USD)")
+#  
+#  plt.tight_layout() # ensures all areas of the chart are visible by default (fixes labels getting cut off)
+#  plt.show()
